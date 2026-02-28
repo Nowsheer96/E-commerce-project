@@ -30,20 +30,20 @@ router.get("/home",verifyLogin, function (req, res, next) {
    let admin = req.session.admin;
    console.log(admin)
   productHelper.getAllProducts().then((products) => {
-    res.render("admin/view-products", { admin, products });
+    res.render("admin/view-products", { admin:true, admin, products });
   });
 });
 
 router.get("/add-product",verifyLogin, function (req, res) {
    let admin=req.session.admin;
-  res.render("admin/addProduct",{admin});
+  res.render("admin/addProduct",{admin:true, admin});
  
 });
 
 router.get('/allUser',verifyLogin,async(req,res)=>{
   let users =await adminHelpers.getAllUsers()
   console.log(users)
-res.render('admin/allUsers',{admin:req.session.admin,users})
+res.render('admin/allUsers',{ admin:req.session.admin,users})
 
 })
 
@@ -132,7 +132,7 @@ router.get("/",  (req, res) => {
   if (req.session.admin) {
     res.redirect("/admin/home");
   } else {
-    res.render("admin/adminlogin", { loginErr: req.session.adminLoginErr });
+    res.render("admin/adminlogin", {admin:true, loginErr: req.session.adminLoginErr });
    req.session.adminLoginErr =false
   }
 });
@@ -165,7 +165,7 @@ router.get('/view-products', verifyLogin,(req, res) => {
 
 router.get("/adminsignUp", (req, res) => {
   console.log('admin signup called')
-  res.render("admin/admin-Signup");
+  res.render("admin/admin-Signup",{admin:true});
 });
 
 
@@ -178,7 +178,7 @@ router.post("/adminsignup", (req, res) => {
    
     req.session.admin = response;
  req.session.adminLoggedIn = true;
-    res.render("admin/view-products");
+    res.render("admin/view-products",{admin:true});
   });
 });
 

@@ -20,7 +20,9 @@ const disableCache = (req, res, next) => {
 }; */
 
 const verifyLogin = (req, res, next) => {
-  if (req.session.user.loggedIn) {
+  
+  if (req.session && req.session.user && req.session.user.loggedIn) 
+    {console.log("reached here at verifyLogin"+req.session.user.loggedIn)
     next();
   } else {
     // Check if it's an AJAX request
