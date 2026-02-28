@@ -1,0 +1,92 @@
+<section>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">User Management</h2>
+        <table class="table table-bordered shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>User ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td>{{this.Name}}</td>
+                    <td>{{this.Email}}</td>
+                    <td><small class="text-muted">{{this._id}}</small></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="openEditModal('{{this._id}}', '{{this.Email}}','{{this.Name}}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('{{this._id}}')">Remove</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div class="modal fade" id="editUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User Credentials</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-user-form">
+                    <input type="hidden" name="userId" id="modalUserId">
+                      <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="Name" id="modalName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New Email</label>
+                        <input type="email" name="Email" id="modalEmail" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New Password (Leave blank to keep current)</label>
+                        <input type="password" name="Password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Update User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openEditModal(userId, email,name) {
+    document.getElementById('modalUserId').value = userId;
+    document.getElementById('modalEmail').value = email;
+    document.getElementById('modalName').value = name;
+    new bootstrap.Modal(document.getElementById('editUserModal')).show();
+}
+
+$('#edit-user-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/admin/edit-user',
+        method: 'post',
+        data: $('#edit-user-form').serialize(),
+        success: (response) => {
+            if (response.status) {
+                location.reload();
+            }
+        }
+    });
+});
+
+function deleteUser(userId) {
+    if (confirm("Are you sure you want to remove this user?")) {
+        $.ajax({
+            url: '/admin/delete-user/' + userId,
+            method: 'get',
+            success: (response) => {
+                location.reload();
+            }
+        });
+    }
+}
+</script>

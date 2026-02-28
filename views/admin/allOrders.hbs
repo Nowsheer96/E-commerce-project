@@ -1,0 +1,85 @@
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<section>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Customer Order Management</h2>
+        <div class="table-responsive">
+            <table class="table table-hover mt-3 align-middle shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Payment</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each orders}}
+                    <tr>
+                        <td>{{formatDate this.date}}</td>
+                        <td>{{this.customerName}}</td>
+                        <td>
+                            {{this.deliveryDetails.address}}<br>
+                            <small class="text-muted">Ph: {{this.deliveryDetails.mobile}}</small>
+                        </td>
+                        <td>Rs. {{this.totalAmount}}</td>
+                        <td>{{this.paymentMethod}}</td>
+                        <td>
+                            <span class="badge rounded-pill {{#if (or (eq this.status 'Shipped') (eq this.status 'Delivered'))}}
+                            bg-success
+                            {{else if (eq this.status 'Placed')}}
+                            bg-warning text-dark
+                            {{else if (eq this.status 'Cancelled')}}
+                            bg-danger 
+                            {{else }}
+                             bg-info text-dark
+                            {{/if}}" id="status-{{this._id}}">
+                                {{this.status}}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    Change Status
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="updateStatus('{{this._id}}', 'Shipped')">Shipped</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="updateStatus('{{this._id}}', 'Delivered')">Delivered</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="updateStatus('{{this._id}}', 'Cancelled')">Cancel Order</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+function updateStatus(orderId, status) {
+    $.ajax({
+        url: '/admin/update-order-status',
+        method: 'post',
+        data: {
+            orderId: orderId,
+            status: status
+        },
+        success: (response) => {
+            if (response.status) {
+                // Update the badge text and color dynamically
+                let badge = document.getElementById('status-' + orderId);
+                badge.innerHTML = status;
+                if(status === 'Shipped') {
+                    badge.className = "badge rounded-pill bg-success";
+                }
+                alert("Order status updated to " + status);
+            }
+        }
+    })
+}
+</script>

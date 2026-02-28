@@ -1,0 +1,43 @@
+<section>
+    <div class="container mt-5">
+        <div class="table-responsive">
+            <table class="table table-hover mt-5 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Pincode</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Payment</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each orders}}
+                    <tr>
+                        <td>{{this.date}}</td>
+                        <td>{{this.deliveryDetails.address}}</td>
+                        <td>{{this.deliveryDetails.pincode}}</td>
+                        <td>{{this.deliveryDetails.mobile}}</td>
+                        <td>Rs. {{this.totalAmount}}</td>
+                        <td>{{this.paymentMethod}}</td>
+                        <td><span class="badge bg-info text-dark">{{this.status}}</span></td>
+                        <td>
+                            <a href="/view-order-products/{{this._id}}" class="btn btn-primary btn-sm">View Products</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        
+        {{#unless orders}}
+        <div class="text-center mt-5">
+            <h3>No orders placed yet.</h3>
+            <a href="/" class="btn btn-success mt-3">Start Shopping</a>
+        </div>
+        {{/unless}}
+    </div>
+</section>

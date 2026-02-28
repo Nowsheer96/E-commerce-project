@@ -1,0 +1,122 @@
+<section>
+  <div class="container mt-5">
+    <div class="table-responsive">
+      <table class="table table-hover mt-5 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Title</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each products}}
+            <tr>
+              <td>
+                <img
+                  src="/product-images/{{this.product._id}}.jpg"
+                  alt="{{this.product.Name}}"
+                  style="width: 70px; height: 70px; object-fit: contain;"
+                />
+              </td>
+              <td>{{this.product.Name}}</td>
+              <td>Rs. {{this.product.Price}}</td>
+              <td>
+                {{!--    <div class="d-flex align-items-center">
+                                <button class="btn btn-sm btn-outline-secondary me-2 cart-item-count" 
+                                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}', -1)">-</button>
+                                
+                                <span id="{{this.product._id}}" class="fw-bold">{{this.quantity}}</span>
+                                
+                                <button class="btn btn-sm btn-outline-secondary ms-2 cart-item-count" 
+                                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}', 1)">+</button>
+                            </div> --}}
+
+                <div class="d-flex align-items-center">
+
+                  <button
+                    class="btn btn-sm btn-outline-secondary me-2 cart-item-count"
+                    {{!--  {{#if (eq this.quantity 1)}} disabled{{/if}} --}}
+                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}', -1)"
+                  >-</button>
+
+                  <span
+                    id="{{this.product._id}}"
+                    class="fw-bold"
+                  >{{this.quantity}}</span>
+
+                  <button
+                    class="btn btn-sm btn-outline-secondary ms-2 cart-item-count"
+                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}', 1)"
+                  >+</button>
+
+                </div>
+              </td>
+              <td>
+                <button
+                  class="btn btn-danger btn-sm"
+                  onclick="removeProduct('{{this._id}}','{{this.product._id}}')"
+                >Remove</button>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <hr />
+    <div class="float-end pr-5 mt-4">
+      <h3 class="float-start me-5">Total: Rs.
+        <span id="total">{{total}}</span></h3>
+      <a
+        href="/place-order"
+        class="btn btn-success mt-3"
+        style="width: 100%;"
+      ><b>Place Order</b></a>
+    </div>
+  </div>
+</section>
+
+<script>
+
+  function changeQuantity(cartId,prdId,count)
+  { let quantity =
+  parseInt(document.getElementById(prdId).innerHTML);
+   count = parseInt(count);
+  $.ajax({
+     url:'/change-product-qty',
+      data:{ cart:cartId,
+       product:prdId,
+  count:count,
+   quantity: quantity },
+    method:'post',
+     success:(response)=>{ if
+  (response.removeProduct) { alert("Product Removed from cart");
+  location.reload();
+   } else {
+     // Update the quantity in the span
+  document.getElementById(prdId).innerHTML = quantity + count; 
+  document.getElementById('total').innerHTML = response.total;
+  // You'll need to add a class or ID to the minus button to target it easily
+   } } }) }
+
+ function removeProduct(cartId, prdId) {
+    $.ajax({
+      url: '/remove-Product',
+      data: {
+        cart: cartId,
+        product: prdId
+      }, // Added the missing comma here
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          alert("Product Removed from Cart Successfully");
+          location.reload();
+        }
+      }
+    });
+  }
+  
+
+</script>

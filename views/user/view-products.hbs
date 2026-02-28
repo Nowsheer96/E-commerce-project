@@ -1,0 +1,43 @@
+<section>
+  <div class="container mt-5">
+    <div class="row">
+      {{#each products}}
+      <div class="col-md-3 mb-4"> <div class="card" style="width: 15rem; height: 23rem;">
+          <img class="card-img-top" src="/product-images/{{this._id}}.jpg" alt="{{this.Name}}" style="height: 200px; object-fit: contain;">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{this.Name}}</h5>
+            
+            <div id="desc-container-{{this._id}}">
+              <p class="card-text description-text truncated">{{this.Description}}</p>
+              <a href="javascript:void(0)" class="read-more-link" onclick="toggleText('{{this._id}}')">Read more</a>
+            </div>
+
+          
+            <button onclick="addToCart('{{this._id}}')" class="btn btn-primary mt-auto" >Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</section>
+
+<script>
+  function addToCart(prdId) {
+    $.ajax({
+        url: '/add-to-cart/' + prdId,
+        method: 'get',
+        success: (response) => {
+            if (response.status) {
+                // Update badge count
+                let count = $('#cart-count').html();
+                count = parseInt(count) || 0;
+                $("#cart-count").html(count + 1);
+            } else if (response.loginRedirect) {
+                // Manually redirect to login if session expired
+                window.location.href = '/login';
+            }
+        }
+    });
+}
+</script>

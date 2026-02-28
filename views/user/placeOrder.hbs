@@ -1,0 +1,135 @@
+<section>
+    <div class="container mt-5">
+        <form action="" id="checkout-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="mb-4">Enter Delivery Details</h2>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pincode" class="form-label">Pincode</label>
+                        <input type="text" class="form-control" id="pincode" name="pincode" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Mobile</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile" required>
+                    </div>
+                    <input type="text" name="userId" value="{{user._id}}" hidden>
+                   
+                </div>
+
+                <div class="col-md-4 offset-md-1">
+                    <div class="card p-4 mt-5 border shadow-sm">
+                        <h5 class="fw-bold">Total Amount : Rs.{{total}}</h5>
+                        <hr>
+                        <div class="payment mt-3">
+                            <p>Payment method</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment-method" id="cod" value="COD" checked>
+                                <label class="form-check-label" for="cod">COD</label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="payment-method" id="online" value="ONLINE">
+                                <label class="form-check-label" for="online">Online payment</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mt-4">Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<script>
+$('#checkout-form').submit((e)=>{
+    e.preventDefault()
+    $.ajax({
+        url:'/place-order',
+        method:'post',
+        data:$('#checkout-form').serialize(),
+        success:(response)=>{
+            if(response.codSuccess){
+                location.href='/order-success'
+                console.log("COD SUccess")
+            }else{
+                console.log("reached here at pay response")
+                razorpayPayment(response)
+
+            }
+        }
+    })
+})
+
+
+function razorpayPayment(order){
+    
+    var options = {
+    "key": "rzp_test_SLIyYSK9KYwFZ9", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. 
+    "currency": "INR",
+    "name": "Nowsheer", //your business name
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+     "handler": function (response){
+       
+        verifyPayment(response,order)
+    },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com", 
+        "contact": "+919876543210"  //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+
+var rzp1 = new Razorpay(options);
+rzp1.open();
+}
+
+
+
+function verifyPayment(payment,order){
+    $.ajax({
+        url:'/verify-payment',
+        data:{
+            payment,order
+        },
+        method:'post',
+        success:(response)=>{
+            if(response.status){
+                location.href='/order-success'
+                console.log("online order successfully placed")
+            }
+            else{
+                alert("payment Failed")
+            }
+        }
+    })
+} 
+
+/*
+function verifyPayment(payment,order){
+    $.ajax({
+        url:'/verify-payment',
+        data:{ payment, order },
+        method: 'post', // FIXED
+        success: (response) => {
+            if(response.status) {
+                location.href = '/order-success';
+            } else {
+                alert("Payment failed");
+            }
+        }
+    })
+}*/
+</script>
