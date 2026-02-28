@@ -104,7 +104,7 @@ router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
   });
 });
 
-router.get("/viewCart/:id", verifyLogin,async (req, res) => {
+router.get("/viewCart/:id",verifyLogin, async (req, res) => {
 
   let total= await userHelpers.getTotalAmount(req.session.user._id)
   let userId = req.params.id;
