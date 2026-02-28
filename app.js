@@ -61,7 +61,13 @@ formatDate: (date) => {
 );
 app.use(logger("dev"));
 app.use(express.json());
-app.use(session({secret:"Key",cookie:{maxAge:600000}}))
+/* app.use(session({secret:"Key",cookie:{maxAge:600000}})) */
+app.use(session({
+  secret: process.env.SESSION_SECRET || "NowsheerEcomProject_2026_Secure_Key_!@#",
+  resave: false,           // Fixes the first warning
+  saveUninitialized: true, // Fixes the second warning
+  cookie: { maxAge: 600000 }
+}));
 db.connect((err) => {
     if (err) {
         console.log("Connection Error: " + err);
