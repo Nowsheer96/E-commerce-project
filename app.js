@@ -8,7 +8,7 @@ var session=require('express-session')
 
 var userRouter = require("./routes/user");
 var adminRouter = require("./routes/admin");
-var db = require("./config/connection");
+const db = require('./config/connection');
 
 var { engine } = require("express-handlebars");
 
@@ -69,16 +69,15 @@ app.use(session({
   cookie: { maxAge: 600000 }
 }));
 db.connect((err) => {
-    if (err) {
-        console.log("Connection Error: " + err);
-    } else {
-        console.log("Database connected to port 27017");
-        
-        // ONLY start the server after the database is connected
-        app.listen(4000, () => {
-            console.log("Server listening on port 3000");
-        });
-    }
+  if (err) {
+    console.log("Connection Error: " + err);
+    process.exit(1);
+  } else {
+    console.log("Database Connected to Atlas");
+    
+    // ONLY start the app logic here if possible, 
+    // or ensure your helpers handle a null connection.
+  }
 });
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
