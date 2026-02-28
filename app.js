@@ -5,6 +5,11 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var session=require('express-session')
+if (process.env.NODE_ENV === 'production') {
+    console.log = function () {};
+    console.warn = function () {};
+    // console.error = function () {}; // Highly recommended to leave this commented out so you can still see critical errors in Render logs
+}
 
 var userRouter = require("./routes/user");
 var adminRouter = require("./routes/admin");
