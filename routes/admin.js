@@ -3,7 +3,8 @@ const { render, response } = require("../app");
 var router = express.Router();
 var productHelper = require("../helpers/product-helper");
 var adminHelpers = require("../helpers/admin-helpers");
-
+const fs = require('fs');
+const path = require('path');
 /* Handlebars.registerHelper('increment', function(value) {
     return parseInt(value) + 1;
 });
@@ -85,7 +86,7 @@ router.post("/addProduct", (req, res) => {
     let image = req.files.Image;
     image.mv("./public/product-images/" + id + ".jpg", (err) => {
       if (!err) {
-        res.render("admin/addProduct");
+        res.render("admin/addProduct",{admin:req.session.admin});
       } else console.log(err);
     });
   });
@@ -99,6 +100,14 @@ router.get("/logout", (req, res) => {
 router.get('/delete-product/:id',(req,res)=>{
   let prdId=req.params.id
   productHelper.deleteProduct(prdId).then((response)=>{
+    let imagePath=path.join(__dirname,'../public/product-images/',prdId+'.jpg')
+    fs.unlink(imagePath,(err)=>{
+      if (err) {
+                console.log("Image not found or already deleted:", err);
+            } else {
+                console.log("Image deleted successfully");
+            }
+    })
     res.redirect('/admin/')
   })
 })
