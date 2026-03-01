@@ -45,7 +45,7 @@
                                     <li><a class="dropdown-item rounded-2" href="javascript:void(0)" onclick="retryPayment('{{this._id}}', 'COD','{{this.totalAmount}}')"><i class="fas fa-shipping-fast me-2 text-primary"></i> COD</a></li>
                                     <li><a class="dropdown-item rounded-2" href="javascript:void(0)" onclick="retryPayment('{{this._id}}', 'Online','{{this.totalAmount}}')"><i class="fas fa-check-circle me-2 text-success"></i> Online</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item rounded-2 text-danger" href="javascript:void(0)" onclick="updateStatus('{{this._id}}', 'Cancelled')"><i class="fas fa-times-circle me-2"></i> Cancel Order</a></li>
+                                    <li><a class="dropdown-item rounded-2 text-danger" href="javascript:void(0)" onclick="retryPayment('{{this._id}}', 'Cancelled','{{this.totalAmount}}')"><i class="fas fa-times-circle me-2"></i> Cancel Order</a></li>
                                 </ul>
                             </div>
         {{/if}}
@@ -78,11 +78,16 @@
             Amount:Amount
         },
         success: (response) => {
-            if (response.id) {
+            if (status==='Online' && response) {
+              
+    razorpayPayment(response);
+  
+                
                 // Call your existing razorpayPayment function with the new Razorpay order info
-                razorpayPayment(response);
+             
             } else {
                 alert(response.message);
+                location.href='/orderList'
             }
         }
     });

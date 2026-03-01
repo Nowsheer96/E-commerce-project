@@ -156,7 +156,9 @@ console.log("placeOrderPost")
 
   let products=await userHelpers.getCartProductList(req.body.userId)
   let totalPrice= await userHelpers.getTotalAmount(req.body.userId)
- userHelpers.placeOrder(req.body,products,totalPrice).then((orderId)=>{
+  if(totalPrice!=0){
+
+userHelpers.placeOrder(req.body,products,totalPrice).then((orderId)=>{
 
   if(req.body['payment-method']==='COD'){
 
@@ -164,7 +166,9 @@ console.log("placeOrderPost")
   }
 else{
   userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{
+    
     res.json(response)
+   
 
   })
 
@@ -172,6 +176,11 @@ else{
  
 
  })
+  }
+  else{
+    console.log("kjdshfkhsdkfj!!!!!!!!!!!!")
+  }
+ 
 
   console.log(req.body)
 
@@ -234,8 +243,19 @@ router.post('/retry-payment',(req,res)=>{
     })
 
   }
+  else if(status==='Cancelled'){
+      userHelpers.updateOrderStatus(orderId,status).then((response)=>{
+      
+       res.json({ status: true, message: "Order is now Cancelled" });
+
+    })
+
+  }
   else{
      userHelpers.generateRazorpay(orderId,totalAmount).then((response)=>{
+      console.log("qwerty")
+      console.log(response)
+     
       res.json(response);
     })
   
