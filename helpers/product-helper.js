@@ -10,7 +10,7 @@ module.exports = {
 
 product.Price = parseInt(product.Price);
     db.get()
-      .collection("products")
+      .collection(collections.PRODUCT_COLLECTION)
       .insertOne(product)
       .then((data) => {
         
