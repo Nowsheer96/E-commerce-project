@@ -1,61 +1,143 @@
-<section>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">User Management</h2>
-        <table class="table table-bordered shadow-sm">
-            <thead class="table-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>User ID</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each users}}
-                <tr>
-                    <td>{{this.Name}}</td>
-                    <td>{{this.Email}}</td>
-                    <td><small class="text-muted">{{this._id}}</small></td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="openEditModal('{{this._id}}', '{{this.Email}}','{{this.Name}}')">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteUser('{{this._id}}')">Remove</button>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+<section class="bg-light min-vh-100 py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">User Management</h2>
+                <p class="text-muted small mb-0">Monitor user activity and manage credentials</p>
+            </div>
+            <div class="stats-brief d-flex gap-3 text-end">
+                <div class="px-3 border-end">
+                    <span class="d-block fw-bold fs-5">{{users.length}}</span>
+                    <span class="small text-muted text-uppercase">Total Users</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="bg-white border-bottom">
+                        <tr>
+                            <th class="ps-4 py-3 text-uppercase small fw-bold text-muted">User Profile</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted">Email Address</th>
+                            <th class="py-3 text-uppercase small fw-bold text-muted d-none d-md-table-cell">Internal ID</th>
+                            <th class="pe-4 py-3 text-uppercase small fw-bold text-muted text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each users}}
+                        <tr class="user-row">
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                
+                                    <span class="fw-bold text-dark">{{this.Name}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-muted">{{this.Email}}</span>
+                            </td>
+                            <td class="d-none d-md-table-cell">
+                                <code class="small text-muted px-2 py-1 bg-light rounded">{{this._id}}</code>
+                            </td>
+                            <td class="pe-4 text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-icon-action btn-outline-primary border-0" 
+                                            onclick="openEditModal('{{this._id}}', '{{this.Email}}','{{this.Name}}')"
+                                            title="Edit User">
+                                        <i class="fas fa-user-edit"></i>
+                                    </button>
+                                    <button class="btn btn-icon-action btn-outline-danger border-0" 
+                                            onclick="deleteUser('{{this._id}}')"
+                                            title="Remove User">
+                                        <i class="fas fa-user-minus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </section>
 
 <div class="modal fade" id="editUserModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit User Credentials</h5>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Edit User Credentials</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form id="edit-user-form">
                     <input type="hidden" name="userId" id="modalUserId">
-                      <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="Name" id="modalName" class="form-control" required>
-                    </div>
+                    
                     <div class="mb-3">
-                        <label class="form-label">New Email</label>
-                        <input type="email" name="Email" id="modalEmail" class="form-control" required>
+                        <label class="form-label small fw-bold text-muted">FULL NAME</label>
+                        <input type="text" name="Name" id="modalName" class="form-control bg-light border-0 py-2" required>
                     </div>
+                    
                     <div class="mb-3">
-                        <label class="form-label">New Password (Leave blank to keep current)</label>
-                        <input type="password" name="Password" class="form-control">
+                        <label class="form-label small fw-bold text-muted">EMAIL ADDRESS</label>
+                        <input type="email" name="Email" id="modalEmail" class="form-control bg-light border-0 py-2" required>
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Update User</button>
+                    
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-muted">NEW PASSWORD</label>
+                        <input type="password" name="Password" class="form-control bg-light border-0 py-2" placeholder="Leave blank to keep current">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold rounded-3 shadow-sm">
+                        UPDATE ACCOUNT <i class="fas fa-save ms-2"></i>
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .bg-light { background-color: #f8f9fa !important; }
+    .bg-primary-soft { background-color: #eef2ff; }
+    .avatar-sm { width: 38px; height: 38px; font-size: 0.9rem; }
+    
+    /* Table Styling */
+    .table thead th {
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        background-color: #ffffff;
+    }
+
+    .user-row:hover { background-color: #fcfcfc; }
+
+    /* Action Buttons */
+    .btn-icon-action {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        transition: all 0.2s ease;
+    }
+
+    .btn-icon-action:hover {
+        background-color: rgba(13, 110, 253, 0.1) !important;
+        transform: translateY(-2px);
+    }
+
+    .btn-icon-action.btn-outline-danger:hover {
+        background-color: rgba(220, 53, 69, 0.1) !important;
+    }
+
+    /* Modal Styling */
+    .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+        border: 1px solid #0d6efd !important;
+    }
+</style>
 <script>
 function openEditModal(userId, email,name) {
     document.getElementById('modalUserId').value = userId;

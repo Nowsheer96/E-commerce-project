@@ -1,82 +1,119 @@
-<section>
-  <div class="container mt-5">
-    <div class="table-responsive">
-      <table class="table table-hover mt-5 align-middle">
-        <thead class="table-light">
-          <tr>
-            <th scope="col">Item</th>
-            <th scope="col">Title</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each products}}
-            <tr>
-              <td>
-                <img
-                  src="/product-images/{{this.product._id}}.jpg"
-                  alt="{{this.product.Name}}"
-                  style="width: 70px; height: 70px; object-fit: contain;"
-                />
-              </td>
-              <td>{{this.product.Name}}</td>
-              <td>Rs. {{this.product.Price}}</td>
-              <td>
-                {{!--    <div class="d-flex align-items-center">
-                                <button class="btn btn-sm btn-outline-secondary me-2 cart-item-count" 
-                                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}', -1)">-</button>
-                                
-                                <span id="{{this.product._id}}" class="fw-bold">{{this.quantity}}</span>
-                                
-                                <button class="btn btn-sm btn-outline-secondary ms-2 cart-item-count" 
-                                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}', 1)">+</button>
-                            </div> --}}
-
-                <div class="d-flex align-items-center">
-
-                  <button
-                    class="btn btn-sm btn-outline-secondary me-2 cart-item-count"
-                    {{!--  {{#if (eq this.quantity 1)}} disabled{{/if}} --}}
-                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}', -1)"
-                  >-</button>
-
-                  <span
-                    id="{{this.product._id}}"
-                    class="fw-bold"
-                  >{{this.quantity}}</span>
-
-                  <button
-                    class="btn btn-sm btn-outline-secondary ms-2 cart-item-count"
-                    onclick="changeQuantity('{{this._id}}','{{this.product._id}}', 1)"
-                  >+</button>
-
+<section class="bg-light py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white py-3">
+            <h5 class="mb-0 fw-bold">My Cart ({{products.length}})</h5>
+          </div>
+          <div class="card-body p-0">
+            {{#each products}}
+            <div class="row align-items-center g-0 p-3 border-bottom cart-item-row">
+              <div class="col-3 col-md-2">
+                <div class="img-container bg-white p-1 rounded border">
+                  <img src="/product-images/{{this.product._id}}.jpg" 
+                       alt="{{this.product.Name}}" 
+                       class="img-fluid rounded"
+                       style="height: 80px; width: 100%; object-fit: contain;">
                 </div>
-              </td>
-              <td>
-                <button
-                  class="btn btn-danger btn-sm"
-                  onclick="removeProduct('{{this._id}}','{{this.product._id}}')"
-                >Remove</button>
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-    <hr />
-    <div class="float-end pr-5 mt-4">
-      <h3 class="float-start me-5">Total: Rs.
-        <span id="total">{{total}}</span></h3>
-      <a
-        href="/place-order"
-        class="btn btn-success mt-3"
-        style="width: 100%;"
-      ><b>Place Order</b></a>
+              </div>
+
+              <div class="col-9 col-md-10 ps-3">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h6 class="fw-bold mb-1">{{this.product.Name}}</h6>
+                    <p class="text-muted small mb-2">Category: {{this.product.Category}}</p>
+                    <div class="h6 fw-bold text-dark">₹{{this.product.Price}}</div>
+                  </div>
+                  
+                  <div class="qty-control d-flex align-items-center bg-light rounded px-2" style="height: 40px;">
+                    <button class="btn btn-sm p-1 border-0" 
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}', -1)">
+                      <i class="fas fa-minus small"></i>
+                    </button>
+                    <span id="{{this.product._id}}" class="px-3 fw-bold">{{this.quantity}}</span>
+                    <button class="btn btn-sm p-1 border-0" 
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}', 1)">
+                      <i class="fas fa-plus small"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="mt-2">
+                  <button class="btn btn-link text-danger text-decoration-none p-0 small fw-bold" 
+                          onclick="removeProduct('{{this._id}}','{{this.product._id}}')">
+                    REMOVE
+                  </button>
+                </div>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+          <div class="card-header bg-white py-3">
+            <h6 class="text-muted fw-bold mb-0">PRICE DETAILS</h6>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+              <span>Price ({{products.length}} items)</span>
+              <span>₹<span id="sub-total">{{total}}</span></span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Delivery Charges</span>
+              <span class="text-success">FREE</span>
+            </div>
+            <hr class="dashed">
+            <div class="d-flex justify-content-between mb-3">
+              <h5 class="fw-bold">Total Amount</h5>
+              <h5 class="fw-bold text-primary">₹<span id="total">{{total}}</span></h5>
+            </div>
+            <div class="text-success small fw-bold mb-4">
+               <i class="fas fa-shield-alt"></i> Safe and Secure Payments. 100% Authentic products.
+            </div>
+            <a href="/place-order" class="btn btn-warning w-100 fw-bold py-3 shadow-sm place-order-btn">
+              PLACE ORDER
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .cart-item-row:hover {
+    background-color: #fafafa;
+  }
+  
+  .dashed {
+    border: none;
+    border-top: 1px dashed #ddd;
+    color: #fff;
+    background-color: #fff;
+    height: 1px;
+    width: 100%;
+  }
+
+  .place-order-btn {
+    background-color: #fb641b !important; /* Flipkart Orange */
+    border-color: #fb641b !important;
+    color: white !important;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .place-order-btn:hover {
+    background-color: #f4510b !important;
+  }
+
+  .qty-control button:hover {
+    color: #fb641b;
+  }
+</style>
 
 <script>
 

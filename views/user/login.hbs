@@ -1,28 +1,114 @@
-<div class="row">
-    <div class="col-md-6 m-auto">
-        <div class="container mt-5 pl-5">
-            <h2 class="text-center">Login</h2>
-            <form action="/login" method="POST">
-
-            {{#if loginErr}}
-            <p class="error">{{loginErr}}</p>
-            {{/if}}
-                <div class="form-group mb-3">
-                    <label>Email Address</label>
-                    <input type="email" class="form-control" name="Email" placeholder="Enter email" required>
-                </div>
+<section class="min-vh-100 d-flex  align-items-center bg-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-5 col-xl-4">
                 
-                <div class="form-group mb-3">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="Password" placeholder="Password" required>
+                <div class="mb-5 text-start">
+                    <h1 class="display-6 fw-bold mb-0">Nofa<span class="text-primary">Cart</span></h1>
+                    <p class="text-muted">Welcome back! Please enter your details.</p>
                 </div>
 
-                <div class="mb-3">
-                    <a href="/signUp" style="text-decoration: none;">Create new account?</a>
+                <form action="/login" method="POST" id="loginForm">
+                    {{#if loginErr}}
+                    <div class="alert alert-soft-danger d-flex align-items-center border-0 small mb-4" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <div>{{loginErr}}</div>
+                    </div>
+                    {{/if}}
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold small text-uppercase tracking-wider">Email Address</label>
+                        <div class="input-group-custom">
+                            <i class="fas fa-envelope icon"></i>
+                            <input type="email" class="form-control-custom" name="Email" placeholder="e.g. nowsheer@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between">
+                            <label class="form-label fw-semibold small text-uppercase tracking-wider">Password</label>
+                            <a href="#" class="small text-primary text-decoration-none">Forgot?</a>
+                        </div>
+                        <div class="input-group-custom">
+                            <i class="fas fa-lock icon"></i>
+                            <input type="password" class="form-control-custom" name="Password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-primary-modern w-100 py-3 fw-bold shadow-sm">
+                            Sign In <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-5">
+                    <span class="text-muted small">Don't have an account?</span>
+                    <a href="/signUp" class="fw-bold text-primary text-decoration-none ms-1">Create Account</a>
                 </div>
 
-                <button type="submit" class="btn btn-primary float-end">Login</button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<style>
+    /* Custom Modern UI Variables */
+    :root {
+        --primary-blue: #2874f0; /* Flipkart Brand Blue */
+        --soft-bg: #f5f7fa;
+    }
+
+    /* Custom Input Fields (No Border-Radius, No Shadow) */
+    .form-control-custom {
+        width: 100%;
+        padding: 12px 12px 12px 40px;
+        border: none;
+        border-bottom: 2px solid #e0e0e0;
+        transition: border-color 0.3s ease;
+        outline: none;
+        background: transparent;
+    }
+
+    .form-control-custom:focus {
+        border-bottom-color: var(--primary-blue);
+    }
+
+    .input-group-custom {
+        position: relative;
+    }
+
+    .input-group-custom .icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #adb5bd;
+    }
+
+    /* Modern Button */
+    .btn-primary-modern {
+        background-color: var(--primary-blue);
+        border: none;
+        color: white;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-modern:hover {
+        background-color: #1a59c5;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(40, 116, 240, 0.3);
+    }
+
+    /* Soft Alert Style */
+    .alert-soft-danger {
+        background-color: #fff5f5;
+        color: #e53e3e;
+        border-radius: 8px;
+    }
+
+    .tracking-wider {
+        letter-spacing: 0.05em;
+    }
+</style>

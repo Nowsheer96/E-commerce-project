@@ -1,23 +1,53 @@
-<section>
-    <div class="container mt-5">
+<section class="bg-light min-vh-100 d-flex align-items-center py-5">
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <div class="card shadow-lg p-5 border-0 rounded-4">
-                    <div class="mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                        </svg>
+            <div class="col-md-7 text-center">
+                <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                    <div class="bg-success" style="height: 6px;"></div>
+                    
+                    <div class="card-body p-5">
+                        <div class="success-animation mb-4">
+                            <div class="icon-circle bg-success-light mx-auto d-flex align-items-center justify-content-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#198754" class="bi bi-check-lg animate-check" viewBox="0 0 16 16">
+                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.42-6.447a.015.015 0 0 1 .015-.01z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <h1 class="fw-bold text-dark mb-2">Order Confirmed!</h1>
+                        <p class="text-muted lead px-lg-5 mb-4">
+                            Hooray! Your order has been placed successfully. We've sent a confirmation email to your registered address.
+                        </p>
+
+                        <div class="order-steps py-4 border-top border-bottom mb-4">
+                            <div class="row g-0">
+                                <div class="col-4 step-item active">
+                                    <i class="fas fa-file-invoice text-success mb-2 fs-4"></i>
+                                    <p class="small fw-bold mb-0">Confirmed</p>
+                                </div>
+                                <div class="col-4 step-item opacity-50">
+                                    <i class="fas fa-shipping-fast mb-2 fs-4"></i>
+                                    <p class="small mb-0 text-muted">Shipped</p>
+                                </div>
+                                <div class="col-4 step-item opacity-50">
+                                    <i class="fas fa-box-open mb-2 fs-4"></i>
+                                    <p class="small mb-0 text-muted">Delivered</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                            <a href="/orderList" class="btn btn-dark btn-lg px-4 rounded-3 shadow-sm fw-bold">
+                                <i class="fas fa-list-ul me-2"></i> Track Order
+                            </a>
+                            <a href="/" class="btn btn-outline-dark btn-lg px-4 rounded-3 fw-bold">
+                                <i class="fas fa-shopping-bag me-2"></i> Shop More
+                            </a>
+                        </div>
                     </div>
                     
-                    <h1 class="fw-bold mb-3">Order Placed Successfully!</h1>
-                    <p class="text-muted mb-4">
-                        Thank you for your purchase. Your order has been received and is being processed. 
-                        You can track the status in your orders list.
-                    </p>
-
-                    <div class="d-grid gap-2 d-md-block">
-                        <a href="/orderList" class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm">View Orders</a>
-                        <a href="/" class="btn btn-outline-secondary btn-lg px-5 rounded-pill ms-md-2">Continue Shopping</a>
+                    <div class="card-footer bg-white border-0 pb-4">
+                        <p class="small text-muted mb-0">Need help? <a href="#" class="text-primary text-decoration-none fw-bold">Contact Support</a></p>
                     </div>
                 </div>
             </div>
@@ -26,13 +56,47 @@
 </section>
 
 <style>
-    body {
-        background-color: #f8f9fa;
+    /* Professional Palette */
+    .bg-success-light { background-color: #e8f5e9; }
+    
+    .icon-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+
+    /* Animations */
+    @keyframes scaleIn {
+        from { transform: scale(0); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .animate-check {
+        animation: checkDraw 0.8s ease-in-out forwards;
+    }
+
+    .step-item {
+        position: relative;
+    }
+
+    .step-item.active p {
+        color: #198754 !important;
+    }
+
+    /* Hover State */
     .card {
-        transition: transform 0.3s ease;
+        border-radius: 20px !important;
+        transition: all 0.3s ease;
     }
-    .card:hover {
-        transform: translateY(-5px);
+    
+    .btn-dark {
+        background-color: #232f3e; /* Matching your NofaCart dark theme */
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background-color: #131921;
+        transform: translateY(-2px);
     }
 </style>

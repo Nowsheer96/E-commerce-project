@@ -153,6 +153,7 @@ router.get("/place-order",verifyLogin, async (req,res)=>{
 
 router.post('/place-order',async (req,res)=>{
 console.log("placeOrderPost")
+
   let products=await userHelpers.getCartProductList(req.body.userId)
   let totalPrice= await userHelpers.getTotalAmount(req.body.userId)
  userHelpers.placeOrder(req.body,products,totalPrice).then((orderId)=>{
@@ -218,7 +219,31 @@ res.json({status:true})
 
 
 
+router.post('/retry-payment',(req,res)=>{
+  let orderId=req.body.orderId
+  let status=req.body.status
+  let totalAmount=req.body.Amount
+  console.log("hell!!!!!!")
+  console.log(req.body)
 
+  if(status==='COD'){
+    userHelpers.updateOrderStatus(orderId,status).then((response)=>{
+      
+       res.json({ status: true, message: "Order Type now converted into COD" });
+
+    })
+
+  }
+  else{
+     userHelpers.generateRazorpay(orderId,totalAmount).then((response)=>{
+      res.json(response);
+    })
+  
+
+  }
+
+
+})
 
 
 

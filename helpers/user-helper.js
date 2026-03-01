@@ -616,6 +616,7 @@ console.log(total[0].total)
             // Clear the user's cart after successful order placement
             db.get().collection(collections.CART_COLLECTION).deleteOne({ user: new ObjectId(order.userId) });
             resolve(response.insertedId);
+           
         });
     });
 },
@@ -707,6 +708,7 @@ if(hmac==details['payment[razorpay_signature]']){
   resolve()
 }
 else{
+ 
   reject()
 }
   })
@@ -721,6 +723,19 @@ return new Promise((resolve,reject)=>{
 })
 })
 
+}
+,
+
+
+
+updateOrderStatus:(orderId,status)=>{
+    return new Promise((resolve,reject)=>{
+        db.get().collection(collections.ORDER_COLLECTION).updateOne({_id:new ObjectId(orderId)},{
+            $set:{status:status}
+        }).then((response)=>{
+            resolve(response)
+        })
+    })
 }
 ,
   getTotalAmount: getTotalAmount,

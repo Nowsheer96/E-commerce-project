@@ -65,11 +65,10 @@ router.get('/delete-user/:id',(req,res)=>{
 
 
 
-router.get('/orders',(req,res)=>{
-  console.log("dsafsdf")
-    let admin=req.session.admin;
+router.get('/orders',verifyLogin,(req,res)=>{
+
    adminHelpers.getAllOrders().then((orders)=>{
-  res.render("admin/allOrders",{admin:true,orders})
+  res.render("admin/allOrders",{admin:req.session.admin,orders})
    }) 
 
 })
@@ -78,7 +77,7 @@ router.get('/orders',(req,res)=>{
 
 
 router.post("/addProduct", (req, res) => {
-  
+  console.log("!!!!!!!!!!!!!!!here check!!!!!!!!!!!!!!!");
   console.log(req.body);
   console.log(req.files.Image);
 
@@ -116,6 +115,8 @@ router.get('/edit-product/:id',verifyLogin,(req,res)=>{
 
 router.post('/editProduct/:id',verifyLogin,(req,res)=>{
   let prdId=req.params.id
+  console.log("here check!!!!!!!!!!!!!")
+  console.log(req.body)
   productHelper.updateProduct(req.body,prdId).then(()=>{
     res.redirect('/admin')
     if(req.files.Image){

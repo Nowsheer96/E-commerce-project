@@ -8,11 +8,12 @@ module.exports = {
   addProduct: (product, callback) => {
     console.log(product);
 
+product.Price = parseInt(product.Price);
     db.get()
       .collection("products")
       .insertOne(product)
       .then((data) => {
-        console.log("here reached  " + data.insertedId);
+        
         console.log(data);
 
         callback(data.insertedId);
@@ -66,6 +67,7 @@ module.exports = {
 
   updateProduct: (detail, id) => {
     return new Promise((resolve, reject) => {
+      let rate=parseInt(detail.Price)
       db.get()
         .collection(collections.PRODUCT_COLLECTION)
         .updateOne(
@@ -74,7 +76,7 @@ module.exports = {
             $set: {
               Name: detail.Name,
               Category: detail.Category,
-              Price: detail.Price,
+              Price: rate,
               Description: detail.Description,
             },
           },
