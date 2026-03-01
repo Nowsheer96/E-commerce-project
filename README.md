@@ -2,7 +2,7 @@ Full-Stack E-Commerce Platform
 A functional E-commerce web application built with the MERN stack (MongoDB, Express, Node.js) and Handlebars. This project demonstrates the transition from local development to a professional cloud-hosted environment with secure authentication and real-time data management.
 
 🚀 Live Demo
-[Insert Your Render URL Here, e.g., https://nowsheer-ecommerce.onrender.com]
+::  https://nowsheer-ecommerce.onrender.com
 
 ✨ Features
 User Authentication: Secure signup and login using express-session.
